@@ -1,8 +1,7 @@
 #LiVCordionMenu
 
 
-An infinitely scrolling menu (both up and down) with and an overlapping cell animation. The menu is customizable in terms of number of cells, their images, how many cells are displayed on the screen etc. 
-The menu's frame can be set to any size. 
+An infinitely scrolling menu with an overlapping cell animation. The menu is customizable in terms of number of cells, their images, how many cells are displayed on the screen, frame size etc.  
 
 <img src="http://i.imgur.com/Rgex3FB.gif" width="200px;">
 <img src="http://i.imgur.com/hxYLpFZ.gif" width="200px;">
@@ -44,7 +43,7 @@ NSArray* images =  [NSArray arrayWithObjects:
                         [UIImage imageNamed:@"cell3"],
                         [UIImage imageNamed:@"cell4"],
                         [UIImage imageNamed:@"cell5"],
-nil];
+                        nil];
     
 //Frame (fill view example)
 CGRect screenRect = [[UIScreen mainScreen] bounds];
@@ -86,7 +85,7 @@ The following delegate is available:
 
 ```objective-c
 
-//User selected an accordion
+//User selected a cell
 - (void)livAccordionMenu:(LIVCordion*)accordionMenu didSelectCell:(int)index {
     NSLog(@"Tapped Index: %d", index);
 }
