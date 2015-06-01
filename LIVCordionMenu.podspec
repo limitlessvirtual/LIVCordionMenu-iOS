@@ -9,7 +9,7 @@ The menu's frame can be set to any size."
   s.license      = "MIT"
   s.author             = { "limitlessvirtual" => "info@limitlessvirtual.com" }
   s.platform     = :ios, "8.0"
-  s.source_files  = "LIVBubbleMenu"
+  s.source_files  = "LIVCordionMenu"
   s.source       = { :git => "https://github.com/limitlessvirtual/LIVCordionMenu-iOS.git", :tag => "v1.0.0" }
   s.requires_arc = true
 
