@@ -1,4 +1,4 @@
-#LiVCordionMenu
+#LIVCordionMenu
 
 
 An infinitely scrolling menu with an overlapping cell animation. The menu is customizable in terms of number of cells, their images, how many cells are displayed on the screen, frame size etc.  
