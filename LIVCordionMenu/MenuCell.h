@@ -11,7 +11,10 @@
 @interface MenuCell : UIView
 
 @property (strong, nonatomic) IBOutlet UILabel *textLabel;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UIView *cellFilter;
+@property (strong, nonatomic) IBOutlet UIView *typeView;
+@property (strong, nonatomic) IBOutlet UILabel *typeLabel;
+
 
 @end
