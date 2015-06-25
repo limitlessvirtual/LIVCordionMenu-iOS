@@ -16,7 +16,9 @@
 @property (strong, nonatomic) UITapGestureRecognizer* tap;
 
 @property (strong, nonatomic) NSArray* images;
+@property (strong, nonatomic) NSArray* types;
 @property (strong, nonatomic) NSArray* labels;
+@property (strong, nonatomic) NSArray* descriptions;
 
 @property (strong, nonatomic) NSTimer* timer;
 @property (assign, nonatomic) float offsetRemaining;
@@ -43,17 +45,24 @@ NSMutableArray* oldFrames;
 
 @implementation LIVCordionMenu
 
-- (id)initMenuWithFrame:(CGRect)menuFrame images:(NSArray*)images labels:(NSArray*)labels {
+- (id)initMenuWithFrame:(CGRect)menuFrame images:(NSArray*)images labels:(NSArray*)labels descriptions:(NSArray*)descriptions types:(NSArray*)types{
     if (self) {
         // Default properties
         _cellDisplayFactor = 3;
         _fontColor = [UIColor whiteColor];
-        _font = [UIFont fontWithName:@"Helvetica" size:25];
+        _font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
+        _descriptionFont = [UIFont fontWithName:@"HelveticaNeue" size:12];
         _snapSpeed = 4;
         _cellFilterAlpha = 0.5;
+        _bigCellSizeFactor = 2;
+        _labelAlignment = NSTextAlignmentCenter;
+        _typeViewActive = NO;
+        
         
         // Arrays
+        _types = [NSArray arrayWithArray:types];
         _labels = [NSArray arrayWithArray:labels];
+        _descriptions = [NSArray arrayWithArray:descriptions];
         _images = [NSArray arrayWithArray:images];
         _cellNumber = (int)[_images count];
         
@@ -87,8 +96,7 @@ NSMutableArray* oldFrames;
     float cellFactor = _container.frame.size.height / _cellDisplayFactor;
     
     _cellHeight = cellFactor;
-    //_cellBigHeight = cellFactor * 2;
-    _cellBigHeight = (_cellDisplayFactor/2) * cellFactor;
+    _cellBigHeight = (_cellDisplayFactor/_bigCellSizeFactor) * cellFactor;
     
     // Add views to container
     [self addViews];
@@ -141,16 +149,39 @@ NSMutableArray* oldFrames;
             positionY += _cellHeight;
         }
         
+        UIView *cellFilter = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 600, 600)];
+        cellFilter.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:_cellFilterAlpha];
+        [view.imageView addSubview:cellFilter];
         
         view.textLabel.text = _labels[actualIndex];
         view.textLabel.textColor = _fontColor;
         view.textLabel.font = _font;
+        view.textLabel.textAlignment = _labelAlignment;
+        view.textLabel.layer.zPosition = 1;
+        
+        view.descriptionLabel.text = _descriptions[actualIndex];
+        view.descriptionLabel.textColor = _fontColor;
+        view.descriptionLabel.font = _descriptionFont;
+        view.descriptionLabel.textAlignment = _labelAlignment;
+        view.descriptionLabel.layer.zPosition = 1;
+        
+        if(_typeViewActive ) {
+            view.typeLabel.text = _types[actualIndex];
+            view.typeLabel.textColor = _fontColor;
+            //view.typeLabel.font = _descriptionFont;
+            //view.typeLabel.textAlignment = _labelAlignment;
+            view.typeLabel.layer.zPosition = 1;
+        } else {
+            view.typeView.hidden = YES;
+        }
+        
         [view.imageView setImage:_images[actualIndex]];
-        view.cellFilter.alpha = _cellFilterAlpha;
+        view.typeView.backgroundColor = _typeViewColor;
         view.clipsToBounds = YES;
         view.userInteractionEnabled = YES;
         
         [_container addSubview:view];
+ 
         [views addObject:view];
         
         _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(cellTapped:)];
@@ -180,9 +211,6 @@ NSMutableArray* oldFrames;
 - (void)scrollAllViews:(float)offset {
  
     // Move all cells
-    
-    //offset = offset/2;
-    
     for (int i = 0;i<views.count;i++) {
         MenuCell* view = [views objectAtIndex:i];
         CGRect tmpFrame = view.frame;
@@ -191,7 +219,7 @@ NSMutableArray* oldFrames;
         if (i != _secondaryViewIndex) {
             if (offset > 0.0 && i == _primaryViewIndex) {
                 // Move primary down 2x
-                tmpFrame.origin.y = oldFrame.origin.y + (offset * _cellDisplayFactor / 2);
+                tmpFrame.origin.y = oldFrame.origin.y + (offset * _cellDisplayFactor / _bigCellSizeFactor);
                 view.frame = tmpFrame;
             } else {
                 // Move everything but secondary 1x
@@ -201,7 +229,7 @@ NSMutableArray* oldFrames;
         } else {
             if (offset < 0.0) {
                 // Move secondary up 2x
-                tmpFrame.origin.y = oldFrame.origin.y + (offset * _cellDisplayFactor / 2);
+                tmpFrame.origin.y = oldFrame.origin.y + (offset * _cellDisplayFactor / _bigCellSizeFactor);
                 view.frame = tmpFrame;
             } else {
                 // Move secondary down 1x
@@ -220,7 +248,7 @@ NSMutableArray* oldFrames;
         // Change height secondary
         CGRect oldSecondaryFrame = [[oldFrames objectAtIndex:_secondaryViewIndex] CGRectValue];
         CGRect secondaryFrame = secondaryView.frame;
-        secondaryFrame.size.height = oldSecondaryFrame.size.height - (offset * floorf((_cellDisplayFactor - 1.0) / 2.0));
+        secondaryFrame.size.height = oldSecondaryFrame.size.height - (offset * floorf((_cellDisplayFactor - 1.0) / _bigCellSizeFactor));
         secondaryView.frame = secondaryFrame;
         
         // Switch
@@ -233,7 +261,7 @@ NSMutableArray* oldFrames;
         // Change height primary
         CGRect oldPrimaryFrame = [[oldFrames objectAtIndex:_primaryViewIndex] CGRectValue];
         CGRect primaryFrame = primaryView.frame;
-        primaryFrame.size.height = oldPrimaryFrame.size.height - (offset * floorf((_cellDisplayFactor - 1.0) / 2.0));
+        primaryFrame.size.height = oldPrimaryFrame.size.height - (offset * floorf((_cellDisplayFactor - 1.0) / _bigCellSizeFactor));
         primaryView.frame = primaryFrame;
         
         // Switch
