@@ -52,11 +52,16 @@ NSMutableArray* oldFrames;
         _fontColor = [UIColor whiteColor];
         _font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
         _descriptionFont = [UIFont fontWithName:@"HelveticaNeue" size:12];
-        _snapSpeed = 4;
         _cellFilterAlpha = 0.5;
         _bigCellSizeFactor = 2;
         _labelAlignment = NSTextAlignmentCenter;
         _typeViewActive = NO;
+        
+        // Calculate speed
+        
+        NSLog(@">> %f", menuFrame.size.height);
+        
+        _snapSpeed = 1;
         
         
         // Arrays
@@ -65,6 +70,24 @@ NSMutableArray* oldFrames;
         _descriptions = [NSArray arrayWithArray:descriptions];
         _images = [NSArray arrayWithArray:images];
         _cellNumber = (int)[_images count];
+        
+        // If less than needed
+        if (_cellNumber < 5) {
+            
+            int difference = 5 - _cellNumber;
+            
+            for (int i = 0; i < difference; i++) {
+                
+                _types = [_types arrayByAddingObjectsFromArray:types];
+                _labels = [_labels arrayByAddingObjectsFromArray:labels];
+                _descriptions = [_descriptions arrayByAddingObjectsFromArray:descriptions];
+                _images = [_images arrayByAddingObjectsFromArray:images];
+            }
+            
+            _cellNumber = (int)[_images count];
+        }
+        
+        NSLog(@"%@", _labels);
         
         // Container
         _menuFrame = menuFrame;
@@ -159,11 +182,14 @@ NSMutableArray* oldFrames;
         view.textLabel.textAlignment = _labelAlignment;
         view.textLabel.layer.zPosition = 1;
         
+        view.descriptionLabel.alpha = 0;
         view.descriptionLabel.text = _descriptions[actualIndex];
         view.descriptionLabel.textColor = _fontColor;
         view.descriptionLabel.font = _descriptionFont;
         view.descriptionLabel.textAlignment = _labelAlignment;
         view.descriptionLabel.layer.zPosition = 1;
+        view.descriptionLabel.tag = 100;
+        
         
         if(_typeViewActive ) {
             view.typeLabel.text = _types[actualIndex];
@@ -209,7 +235,9 @@ NSMutableArray* oldFrames;
 }
 
 - (void)scrollAllViews:(float)offset {
- 
+    
+    NSLog(@"MOVE");
+    
     // Move all cells
     for (int i = 0;i<views.count;i++) {
         MenuCell* view = [views objectAtIndex:i];
@@ -231,6 +259,8 @@ NSMutableArray* oldFrames;
                 // Move secondary up 2x
                 tmpFrame.origin.y = oldFrame.origin.y + (offset * _cellDisplayFactor / _bigCellSizeFactor);
                 view.frame = tmpFrame;
+                
+                
             } else {
                 // Move secondary down 1x
                 tmpFrame.origin.y = oldFrame.origin.y + offset;
@@ -242,9 +272,19 @@ NSMutableArray* oldFrames;
     // Update view sizes
     MenuCell* primaryView = [views objectAtIndex:_primaryViewIndex];
     MenuCell* secondaryView = [views objectAtIndex:_secondaryViewIndex];
+    MenuCell* topView = [views objectAtIndex:_topPaddingIndex];
+    MenuCell* bottomView = [views objectAtIndex:_bottomPaddingIndex];
     
     if (offset < 0.0) {
-
+        //NSLog(@"up");
+        
+        // Set description alpha
+        UILabel *secondaryLabel = (UILabel*)[secondaryView viewWithTag:100];
+        secondaryLabel.alpha =  ((offset * -1) / _cellBigHeight) * 6;
+        
+        UILabel *bottomLabel = (UILabel*)[bottomView viewWithTag:100];
+        bottomLabel.alpha = 0;
+        
         // Change height secondary
         CGRect oldSecondaryFrame = [[oldFrames objectAtIndex:_secondaryViewIndex] CGRectValue];
         CGRect secondaryFrame = secondaryView.frame;
@@ -257,7 +297,17 @@ NSMutableArray* oldFrames;
                 [self resetFromBottom];
             }
         }
+        
     } else if (offset > 0.0) {
+        //NSLog(@"down");
+        
+        // Set description alpha
+        UILabel *primaryLabel = (UILabel*)[primaryView viewWithTag:100];
+        primaryLabel.alpha = 1 - (((offset) / _cellBigHeight) * 6);
+        
+        UILabel *topLabel = (UILabel*)[topView viewWithTag:100];
+        topLabel.alpha = 1;
+        
         // Change height primary
         CGRect oldPrimaryFrame = [[oldFrames objectAtIndex:_primaryViewIndex] CGRectValue];
         CGRect primaryFrame = primaryView.frame;
@@ -271,14 +321,25 @@ NSMutableArray* oldFrames;
             }
         }
     }
+    
+    //MenuCell* bottomPaddingView = [views objectAtIndex:_bottomPaddingIndex];
+    //UILabel *bottomLabel = (UILabel*)[bottomPaddingView viewWithTag:100];
+    //bottomLabel.alpha = 0;
 }
 
 - (void)resetFromBottom {
     _startY = [_pan locationInView:_container].y;
     
-    // Move top cell
+    NSLog(@"CALL");
+    
+    // Set frames
     MenuCell* topPadding = [views objectAtIndex:_topPaddingIndex];
     MenuCell* bottomPadding = [views objectAtIndex:_bottomPaddingIndex];
+    
+    MenuCell* primaryView = [views objectAtIndex:_primaryViewIndex];
+    
+    UILabel *primaryLabel = (UILabel*)[primaryView viewWithTag:100];
+    primaryLabel.alpha = 1;
     
     [topPadding removeFromSuperview];
     
@@ -320,7 +381,7 @@ NSMutableArray* oldFrames;
 - (void)resetFromTop {
     _startY = [_pan locationInView:_container].y;
     
-    // Move bottom cell
+    // Set frame
     MenuCell* topPadding = [views objectAtIndex:_topPaddingIndex];
     MenuCell* bottomPadding = [views objectAtIndex:_bottomPaddingIndex];
     

@@ -17,22 +17,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSArray* types = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5",@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
+    /*NSArray* types = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
     
-    NSArray* labels = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5",@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
-    NSArray* descriptions = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5",@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
+    NSArray* labels = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
+    
+    NSArray* descriptions = @[@"cell 1",@"cell 2",@"cell 3",@"cell 4",@"cell 5"];
+    
     NSArray* images =  [NSArray arrayWithObjects:
                             [UIImage imageNamed:@"cell1"],
                             [UIImage imageNamed:@"cell2"],
                             [UIImage imageNamed:@"cell3"],
                             [UIImage imageNamed:@"cell4"],
                             [UIImage imageNamed:@"cell5"],
-                            [UIImage imageNamed:@"cell1"],
-                            [UIImage imageNamed:@"cell2"],
-                            [UIImage imageNamed:@"cell3"],
-                            [UIImage imageNamed:@"cell4"],
-                            [UIImage imageNamed:@"cell5"],
-                            nil];
+                        
+                            nil];*/
+    
+    NSArray* types = @[@"cell 1",@"cell 2"];
+    
+    NSArray* labels = @[@"cell 1",@"cell 2"];
+    
+    NSArray* descriptions = @[@"cell 1",@"cell 2"];
+    
+    NSArray* images =  [NSArray arrayWithObjects:
+                        [UIImage imageNamed:@"cell1"],
+                        [UIImage imageNamed:@"cell2"],
+                        nil];
+
+    
     
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     
@@ -49,12 +60,16 @@
     _accordionMenu.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
     _accordionMenu.descriptionFont = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     _accordionMenu.cellDisplayFactor = 5;
-    _accordionMenu.snapSpeed = 1;
+    _accordionMenu.snapSpeed = 0.8;//self.view.bounds.size.height / 600;
     
-//    _accordionMenu.bigCellSizeFactor = 1.33;
-//    _accordionMenu.labelAlignment = NSTextAlignmentLeft;
-//    _accordionMenu.typeViewActive = YES;
-//    _accordionMenu.typeViewColor = [UIColor grayColor];
+    NSLog(@">> %f", self.view.bounds.size.height / 600);
+  
+    // Other factors
+    
+    _accordionMenu.bigCellSizeFactor = 1.33;
+    _accordionMenu.labelAlignment = NSTextAlignmentLeft;
+    _accordionMenu.typeViewActive = YES;
+    _accordionMenu.typeViewColor = [UIColor grayColor];
     
     [_accordionMenu initInView:self.view];
 }

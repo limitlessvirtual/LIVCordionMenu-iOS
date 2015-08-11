@@ -11,20 +11,14 @@
             <rect key="frame" x="0.0" y="0.0" width="400" height="333"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="cell1" translatesAutoresizingMaskIntoConstraints="NO" id="6">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6">
                     <rect key="frame" x="-100" y="0.0" width="600" height="333"/>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NKf-6x-Zg6">
                     <rect key="frame" x="0.0" y="0.0" width="400" height="333"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Hello World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" useAutomaticPreferredMaxLayoutWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3">
-                            <rect key="frame" x="20" y="156" width="360" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" useAutomaticPreferredMaxLayoutWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TVy-2X-YJR">
-                            <rect key="frame" x="21" y="173" width="355" height="16"/>
+                            <rect key="frame" x="21" y="309" width="355" height="16"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
@@ -49,14 +43,20 @@
                                 <constraint firstAttribute="height" constant="25" id="nYV-Lv-5Au"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Hello World" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" useAutomaticPreferredMaxLayoutWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3">
+                            <rect key="frame" x="20" y="287" width="360" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="TVy-2X-YJR" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="-4" id="B7b-Ma-bQf"/>
                         <constraint firstAttribute="trailing" secondItem="TVy-2X-YJR" secondAttribute="trailing" constant="24" id="Hat-mI-sTC"/>
                         <constraint firstItem="3" firstAttribute="leading" secondItem="NKf-6x-Zg6" secondAttribute="leading" constant="20" id="KjC-TM-y3N"/>
-                        <constraint firstAttribute="centerY" secondItem="3" secondAttribute="centerY" id="NnD-4s-hJB"/>
+                        <constraint firstItem="TVy-2X-YJR" firstAttribute="top" secondItem="3" secondAttribute="bottom" constant="1.5" id="NzN-vd-9z2"/>
                         <constraint firstAttribute="trailing" secondItem="67E-o0-PTM" secondAttribute="trailing" id="O7k-Zs-A4G"/>
+                        <constraint firstAttribute="bottom" secondItem="TVy-2X-YJR" secondAttribute="bottom" constant="8" id="ReJ-am-TeD"/>
                         <constraint firstItem="3" firstAttribute="leading" secondItem="TVy-2X-YJR" secondAttribute="leading" constant="-1" id="Zz9-ER-2kR"/>
                         <constraint firstAttribute="trailing" secondItem="3" secondAttribute="trailing" constant="20" id="eii-dW-uiF"/>
                         <constraint firstItem="67E-o0-PTM" firstAttribute="top" secondItem="NKf-6x-Zg6" secondAttribute="top" id="ngc-IL-sau"/>
@@ -87,9 +87,6 @@
             <point key="canvasLocation" x="551" y="417.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="cell1" width="500" height="333"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
